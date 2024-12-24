@@ -15,12 +15,14 @@ import keras.src.saving
 
 
 def return_prediction(MODEL, scaler, sample_json):
-    temp = sample_json['Celsius']
-    val = [[temp]]
-    new_val = scaler.fit_transform(val)
-    predict_x = MODEL.predict(new_val)
-    Temp_f = (1.8 * predict_x) + 32
-    return Temp_f
+  temp = sample_json['Celsius']
+  val = np.array([[temp]])
+  new_val = scaler.transform(val)
+  predict_x = MODEL.predict(new_val)
+  predict_x_original = scaler.inverse_transform(predict_x)
+  Temp_f = (1.8 * predict_x_original) + 32
+  return Temp_f
+return_prediction(MODEL, scaler, temp_exp)
 
 
 scaler = pickle.load(open("C:\\Users\\Suyash Pandey\\PycharmProjects\\Temperature_convertor\\SCALER (1).pkl", "rb"))
